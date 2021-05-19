@@ -1,23 +1,20 @@
 import React from 'react';
-import './App.css';
-import Home from "./components/Home";
-import Nav from "./components/Nav";
-import Page404 from "./components/Page404";
-import Synoptic from "./components/Synoptic";
-import Hydrological from "./components/Hydro";
-import { Route, Switch } from "react-router-dom";
 
+import { Switch, Route } from 'react-router-dom';
+import Routes from "./routes";
 
+import NavigationBar from "./components/Shared/NavigationBar";
 
-function App() {
+const App: React.FC = () => {
     return (
         <div>
-            <Nav />
+            <NavigationBar />
             <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route path="/synoptic" component={Synoptic} />
-                <Route path="/hydrological" component={Hydrological} />
-                <Route path="*" component={Page404} />
+                {Routes.map((route: any) => (
+                    <Route exact path={route.path} key={route.path}>
+                        <route.component />
+                    </Route>
+                ))}
             </Switch>
         </div>
     );
