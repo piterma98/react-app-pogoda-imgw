@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import Routes from "./routes";
 
 import NavigationBar from "./components/Shared/NavigationBar";
+import Page404 from "./components/Page404";
 
 const App: React.FC = () => {
     return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
                         <route.component />
                     </Route>
                 ))}
+                <Route path="*" component={Page404} />
             </Switch>
         </div>
     );
