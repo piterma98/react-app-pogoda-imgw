@@ -95,4 +95,6 @@ const NavigationBar: React.FC = (props: any) => {
     );
 };
 
+
+
 export default withRouter(NavigationBar);
