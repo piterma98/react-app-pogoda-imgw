@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const Hydrological = () => {
     const [weather, setWeather] = useState([]);
@@ -12,33 +13,26 @@ const Hydrological = () => {
     useEffect(()=>{
         fetchData();
     }, []);
-    const handleChange = (e:any) => {
-        setSelected_weather(findArrayElementById(weather,e.target.value));
-        console.log(selected_weather);
-    }
-    function findArrayElementById(array:any, id:any) {
-        return array.find((element:any) => {
-            return element.id_stacji === id;
-        })
-    }
     return (
     <div className="App">
             <h1>Hydrological data from IMGW Api</h1>
-        <h2>Wybierz stacje</h2>
-        <select onChange={handleChange}>
-        {weather &&
-        weather.map((weather:any, index:any) => {
-            return(
-            <option value={weather.id_stacji}>{weather.stacja}</option>
-            );
-        })}
-        </select>
+        <Autocomplete
+            id="combo-box"
+            disableClearable
+            options={weather}
+            getOptionLabel={(option:any) => option.stacja}
+            style={{ width: 300 }}
+            onChange={(event, newValue) => {
+                setSelected_weather(newValue);
+            }}
+            renderInput={(params:any) => <TextField {...params} label="Wybierz stacje" variant="outlined" />}
+        />
         <div>
             {Object.entries(selected_weather).map(([key, value]) =>
                 <p>{key} : {value}</p>
             )}
         </div>
-        </div>
+    </div>
     );
 };
 

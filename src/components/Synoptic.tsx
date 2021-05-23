@@ -1,20 +1,39 @@
 import React, {useState, useEffect} from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const Synoptic = () => {
-    useEffect(() =>{
-        getData();
-    },[]);
-    const [data, setData] = useState([]);
-    const getData = async () =>{
-        const data = await fetch('https://danepubliczne.imgw.pl/api/data/synop')
+const Hydrological = () => {
+    const [weather, setWeather] = useState([]);
+    const [selected_weather, setSelected_weather] = useState([]);
+    const fetchData = async () => {
+        const data = await fetch('https://danepubliczne.imgw.pl/api/data/synop/')
             .then(response => response.json());
-        setData(data);
-    }
+        setWeather(data);
+    };
+    useEffect(()=>{
+        fetchData();
+    }, []);
     return (
-        <div>
-            {JSON.stringify(data)}
+        <div className="App">
+            <h1>Synoptic data from IMGW Api</h1>
+            <Autocomplete
+                id="combo-box"
+                disableClearable
+                options={weather}
+                getOptionLabel={(option:any) => option.stacja}
+                style={{ width: 300 }}
+                onChange={(event, newValue) => {
+                    setSelected_weather(newValue);
+                }}
+                renderInput={(params:any) => <TextField {...params} label="Wybierz stacje" variant="outlined" />}
+            />
+            <div>
+                {Object.entries(selected_weather).map(([key, value]) =>
+                    <p>{key} : {value}</p>
+                )}
+            </div>
         </div>
     );
 };
 
-export default Synoptic;
+export default Hydrological;
