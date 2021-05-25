@@ -25,7 +25,7 @@ const Hydrological = () => {
             onChange={(event, newValue) => {
                 setSelected_weather(newValue);
             }}
-            renderInput={(params:any) => <TextField {...params} label="Wybierz stacje" variant="outlined" />}
+            renderInput={(params:any) => <TextField {...params} label="Choose location" variant="outlined" />}
         />
         <div>
             {Object.entries(selected_weather).map(([key, value]) =>

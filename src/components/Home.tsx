@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Home = (props: any) => {
+const Home = () => {
     return (
         <div>
-            <h2>React app for fetching imgw data from api</h2>
+            <h2 style={{textAlign: "center"}}>React app for fetching imgw data from api</h2>
         </div>
     );
 };
