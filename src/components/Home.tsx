@@ -1,9 +1,17 @@
 import React from 'react';
+import Typography from "@material-ui/core/Typography";
 
 const Home = () => {
     return (
         <div>
-            <h2 style={{textAlign: "center"}}>React app for fetching imgw data from api</h2>
+            <Typography
+                variant="h4"
+                color="inherit"
+                align="center"
+                gutterBottom
+            >
+                React app for fetching imgw data from api
+            </Typography>
         </div>
     );
 };

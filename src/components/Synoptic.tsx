@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Grid} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
-const Hydrological = () => {
+const Synoptic = () => {
     const [weather, setWeather] = useState([]);
     const [selected_weather, setSelected_weather] = useState([]);
     const fetchData = async () => {
@@ -53,7 +54,14 @@ const Hydrological = () => {
                   alignItems="center"
                   justify="center">
                 <div>
-                    <h1>Synoptic data from IMGW Api</h1>
+                    <Typography
+                        variant="h4"
+                        color="inherit"
+                        align="center"
+                        gutterBottom
+                    >
+                        Synoptic data from IMGW Api
+                    </Typography>
                 </div>
             </Grid>
             <Grid container
@@ -83,4 +91,4 @@ const Hydrological = () => {
     );
 };
 
-export default Hydrological;
+export default Synoptic;
