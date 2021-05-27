@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Typography from '@material-ui/core/Typography';
 import {Grid} from "@material-ui/core";
+import { useSpring, animated } from 'react-spring'
 
 const Hydrological = () => {
     const [data, setData] = useState([]);
@@ -20,20 +21,28 @@ const Hydrological = () => {
         padding: "5px",
         borderRadius: "10px",
         color: "white",
-        backgroundColor: "DodgerBlue",
+        backgroundColor: "#3f51b5",
         fontFamily: "Arial",
         verticalAlign: "center",
     };
+    const springPropsH1 = useSpring({
+        from: { opacity: 0, marginLeft: -100 },
+        to: { opacity: 1, marginLeft: 0 }
+    })
+    const springPropsDropList = useSpring({
+        from: { opacity: 0, marginRight: -100 },
+        to: { opacity: 1, marginRight: 0 }
+    })
     const renderObject = (object:any) =>{
-        Object.keys(object).forEach(function(key) {
-            if(object[key] === null) {
-                object[key] = '-missing data-';
-            }
-        })
         if(Object.keys(object).length === 0){
             return(<div><p>No location selected</p></div>);
         }
         else{
+            Object.keys(object).forEach(function(key) {
+                if(object[key] === null) {
+                    object[key] = '-missing data-';
+                }
+            })
             return (
                 <div style={style}>
                     <p><span className="material-icons">home</span>{object.stacja}</p>
@@ -60,9 +69,9 @@ const Hydrological = () => {
                   spacing={0}
                   alignItems="center"
                   justify="center">
-                <div>
+                <animated.div style={springPropsH1}>
                     <Typography
-                        variant="h4"
+                        variant="h5"
                         color="inherit"
                         align="center"
                         gutterBottom
@@ -70,13 +79,13 @@ const Hydrological = () => {
                         Hydrological data from IMGW Api
                     </Typography>
 
-                </div>
+                </animated.div>
             </Grid>
             <Grid container
                   spacing={0}
                   alignItems="center"
                   justify="center">
-                <div>
+                <animated.div style={springPropsDropList}>
                     <Autocomplete
                         id="combo-box"
                         disableClearable
@@ -93,7 +102,7 @@ const Hydrological = () => {
                             {renderObject(selected_data)}
                         </div>
                     </div>
-                </div>
+                </animated.div>
             </Grid>
         </div>
     );
