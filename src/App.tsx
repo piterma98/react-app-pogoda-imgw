@@ -8,7 +8,7 @@ import Page404 from "./components/Page404";
 
 const App: React.FC = () => {
     return (
-        <div>
+        <div className = 'App'>
             <NavigationBar />
             <Switch>
                 {Routes.map((route: any) => (

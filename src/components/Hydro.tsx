@@ -3,7 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Typography from '@material-ui/core/Typography';
 import {Grid} from "@material-ui/core";
-import { useSpring, animated } from 'react-spring'
+import { useSpring, animated } from 'react-spring';
+import HydroSingleObject from './HydroSingleObject';
 
 const Hydrological = () => {
     const [data, setData] = useState([]);
@@ -16,15 +17,6 @@ const Hydrological = () => {
             });
         setData(data);
     }
-    const style = {
-        margin: "20px",
-        padding: "5px",
-        borderRadius: "10px",
-        color: "white",
-        backgroundColor: "#3f51b5",
-        fontFamily: "Arial",
-        verticalAlign: "center",
-    };
     const springPropsH1 = useSpring({
         from: { opacity: 0, marginLeft: -100 },
         to: { opacity: 1, marginLeft: 0 }
@@ -38,25 +30,8 @@ const Hydrological = () => {
             return(<div><p>No location selected</p></div>);
         }
         else{
-            Object.keys(object).forEach(function(key) {
-                if(object[key] === null) {
-                    object[key] = '-missing data-';
-                }
-            })
             return (
-                <div style={style}>
-                    <p><span className="material-icons">home</span>{object.stacja}</p>
-                    <p><span>Voivodeship:</span>{object.województwo}</p>
-                    <p><span className="material-icons">water</span>{object.rzeka}</p>
-                    <p><span className="material-icons">thermostat</span>{object.temperatura_wody} &#8451;</p>
-                    <p><span className="material-icons">schedule</span>{object.temperatura_wody_data_pomiaru}</p>
-                    <p><span>Water level:</span>{object.stan_wody}</p>
-                    <p><span className="material-icons">schedule</span>{object.stan_wody_data_pomiaru}</p>
-                    <p><span className="material-icons">ac_unit</span>{object.zjawisko_lodowe}</p>
-                    <p><span className="material-icons">schedule</span>{object.zjawisko_lodowe_data_pomiaru}</p>
-                    <p><span>Fouling factor:</span>{object.zjawisko_zarastania}</p>
-                    <p><span className="material-icons">schedule</span>{object.zjawisko_zarastania_data_pomiaru}</p>
-                </div>
+                <HydroSingleObject stacja={object.stacja} województwo={object.województwo}  rzeka={object.rzeka} temperatura_wody={object.temperatura_wody} temperatura_wody_data_pomiaru={object.temperatura_wody_data_pomiaru} stan_wody={object.stan_wody} stan_wody_data_pomiaru= {object.stan_wody_data_pomiaru} zjawisko_lodowe={object.zjawisko_lodowe} zjawisko_lodowe_data_pomiaru={object.zjawisko_lodowe_data_pomiaru} zjawisko_zarastania={object.zjawisko_zarastania} zjawisko_zarastania_data_pomiaru={object.zjawisko_zarastania_data_pomiaru}/>
             )
         }
     }
@@ -64,23 +39,17 @@ const Hydrological = () => {
         fetchData();
     }, []);
     return (
-        <div className="App">
-            <Grid container
-                  spacing={0}
-                  alignItems="center"
-                  justify="center">
-                <animated.div style={springPropsH1}>
-                    <Typography
-                        variant="h5"
-                        color="inherit"
-                        align="center"
-                        gutterBottom
-                    >
-                        Hydrological data from IMGW Api
-                    </Typography>
-
-                </animated.div>
-            </Grid>
+        <div className="container">
+            <animated.div style={springPropsH1}>
+                <Typography
+                    variant="h5"
+                    color="inherit"
+                    align="center"
+                    gutterBottom
+                >
+                    Hydrological data from IMGW Api
+                </Typography>
+            </animated.div>
             <Grid container
                   spacing={0}
                   alignItems="center"
@@ -91,16 +60,14 @@ const Hydrological = () => {
                         disableClearable
                         options={data}
                         getOptionLabel={(option:any) => option.stacja}
-                        style={{ width: 300 }}
+                        style={{ width: 350 }}
                         onChange={(event, newValue) => {
                             setSelected_data(newValue);
                         }}
-                        renderInput={(params:any) => <TextField {...params} label="Choose location" variant="outlined" />}
+                        renderInput={(params:any) => <TextField {...params} label="Choose station name" variant="outlined" />}
                     />
-                    <div>
-                        <div>
-                            {renderObject(selected_data)}
-                        </div>
+                    <div className='result'>
+                        {renderObject(selected_data)}
                     </div>
                 </animated.div>
             </Grid>

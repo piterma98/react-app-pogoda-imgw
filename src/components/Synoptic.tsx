@@ -1,46 +1,37 @@
 import React, {useState, useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Typography from '@material-ui/core/Typography';
 import {Grid} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { useSpring, animated } from 'react-spring';
+import SynopticSingleObject from './SynopticSingleObject';
 
 const Synoptic = () => {
-    const [weather, setWeather] = useState([]);
-    const [selected_weather, setSelected_weather] = useState([]);
+    const [data, setData] = useState([]);
+    const [selected_data, setSelected_data] = useState([]);
     const fetchData = async () => {
         const data = await fetch('https://danepubliczne.imgw.pl/api/data/synop/')
             .then(response => response.json())
             .catch((error) => {
                 console.error('Error:', error);
             });
-        setWeather(data);
+        setData(data);
     }
-    const style = {
-        margin: "20px",
-        padding: "5px",
-        borderRadius: "10px",
-        color: "white",
-        backgroundColor: "DodgerBlue",
-        fontFamily: "Arial",
-        verticalAlign: "center"
-    };
+    const springPropsH1 = useSpring({
+        from: { opacity: 0, marginLeft: -100 },
+        to: { opacity: 1, marginLeft: 0 }
+    })
+    const springPropsDropList = useSpring({
+        from: { opacity: 0, marginRight: -100 },
+        to: { opacity: 1, marginRight: 0 }
+    })
     const renderObject = (object:any) =>{
         if(Object.keys(object).length === 0){
             return(<div><p>No location selected</p></div>);
         }
-        else {
+        else{
             return (
-                <div style={style}>
-                    <p><span className="material-icons">thermostat</span>{object.temperatura} &#8451;</p>
-                    <p><span className="material-icons"><span
-                        className="material-icons">schedule</span></span>{object.data_pomiaru} {object.godzina_pomiaru}:00
-                    </p>
-                    <p><span className="material-icons">air</span>{object.predkosc_wiatru} km/h</p>
-                    <p><span className="material-icons">explore</span>{object.kierunek_wiatru} &#176;</p>
-                    <p><span>Humidity:</span>{object.wilgotnosc_wzgledna} %</p>
-                    <p><span className="material-icons">water_drop</span>{object.suma_opadu} mm</p>
-                    <p><span className="material-icons">compress</span>{object.cisnienie} hPa</p>
-                </div>
+                <SynopticSingleObject stacja={object.stacja} temperatura={object.temperatura}  data_pomiaru={object.data_pomiaru} godzina_pomiaru={object.godzina_pomiaru} predkosc_wiatru={object.predkosc_wiatru} kierunek_wiatru={object.kierunek_wiatru} wilgotnosc_wzgledna= {object.wilgotnosc_wzgledna} suma_opadu={object.suma_opadu} cisnienie={object.cisnienie}/>
             )
         }
     }
@@ -48,44 +39,37 @@ const Synoptic = () => {
         fetchData();
     }, []);
     return (
-        <div className="App">
+        <div className="container">
+            <animated.div style={springPropsH1}>
+                <Typography
+                    variant="h5"
+                    color="inherit"
+                    align="center"
+                    gutterBottom
+                >
+                    Synoptic data from IMGW Api
+                </Typography>
+            </animated.div>
             <Grid container
                   spacing={0}
                   alignItems="center"
                   justify="center">
-                <div>
-                    <Typography
-                        variant="h4"
-                        color="inherit"
-                        align="center"
-                        gutterBottom
-                    >
-                        Synoptic data from IMGW Api
-                    </Typography>
-                </div>
-            </Grid>
-            <Grid container
-                  spacing={0}
-                  alignItems="center"
-                  justify="center">
-                <div>
+                <animated.div style={springPropsDropList}>
                     <Autocomplete
                         id="combo-box"
                         disableClearable
-                        options={weather}
+                        options={data}
                         getOptionLabel={(option:any) => option.stacja}
-                        style={{ width: 300 }}
+                        style={{ width: 350 }}
                         onChange={(event, newValue) => {
-                            setSelected_weather(newValue);
+                            setSelected_data(newValue);
                         }}
-                        renderInput={(params:any) => <TextField {...params} label="Choose location" variant="outlined" />}
+                        renderInput={(params:any) => <TextField {...params} label="Choose station name" variant="outlined" />}
                     />
-                    <div>
-                        <div>
-                            {renderObject(selected_weather)}
-                        </div>
+                    <div className='result'>
+                        {renderObject(selected_data)}
                     </div>
-                </div>
+                </animated.div>
             </Grid>
         </div>
     );
